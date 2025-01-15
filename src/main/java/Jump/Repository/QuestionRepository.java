@@ -13,4 +13,7 @@ public interface QuestionRepository extends JpaRepository<Question,Integer> {
     Optional<Question> findBySubjectAndContent(String subject,String content);
 
     List<Question> findBySubjectLike(String subject);
+    List<Question> findAll();
+    Optional<Question> findById(long id);
+
 }

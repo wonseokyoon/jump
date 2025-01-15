@@ -109,4 +109,25 @@ class JumpApplicationTests {
 				.contains("sbb");
 	}
 
+	@Test
+	@DisplayName("modfiy question")
+	void testJpa7() {
+		Optional<Question> question=questionRepository.findById(1);
+
+		// 존재하는지
+		assertThat(question)
+				.isPresent();
+		// 수정 전
+		Question question1=question.get();
+		assertThat(question1.getSubject())
+				.isEqualTo("sbb가 무엇인가요?");
+
+		// 수정 후
+		question1.setSubject("수정된 제목");
+		assertThat(question1.getSubject())
+				.isEqualTo("수정된 제목");
+		//db 저장
+		questionRepository.save(question1);
+
+	}
 }

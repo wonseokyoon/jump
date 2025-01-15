@@ -1,0 +1,39 @@
+package Jump.Entity;
+
+import Jump.Repository.QuestionRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Optional;
+
+@Service
+public class QuestionService {
+
+    @Autowired
+    private QuestionRepository questionRepository;
+
+    public Optional<Question> findById(long id) {
+        return questionRepository.findById(id);
+    }
+
+    public List<Question> findAll() {
+        return questionRepository.findAll();
+    }
+
+    public Question modifyQuestion(Long id,Question modifyQuestion) {
+        Optional<Question> optionalQuestion=questionRepository.findById(id);
+        String subject=modifyQuestion.getSubject();
+        String content= modifyQuestion.getContent();
+
+        if(optionalQuestion.isPresent()){
+            Question question=optionalQuestion.get();
+            question.setSubject(subject);
+            question.setContent(content);
+            return questionRepository.save(question);
+        }
+        else {
+            throw new RuntimeException("존재하지 않는 Question");
+        }
+    }
+}
