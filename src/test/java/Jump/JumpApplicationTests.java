@@ -78,4 +78,24 @@ class JumpApplicationTests {
 					.isEqualTo("sbb에 대해서 알고 싶습니다.");
 		});
 	}
+
+	@Test
+	@DisplayName("findBySubjectAndContent")
+	void testJpa5(){
+		Optional<Question> question
+				=questionRepository.findBySubjectAndContent("sbb가 무엇인가요?","sbb에 대해서 알고 싶습니다.");
+		// 존재하는지 확인
+		assertThat(question).isPresent();
+
+		// 필드 검증
+		question.ifPresent(q -> {
+			assertThat(q.getId())
+					.isEqualTo(1);
+			assertThat(q.getContent())
+					.isEqualTo("sbb에 대해서 알고 싶습니다.");
+			assertThat(q.getSubject())
+					.isEqualTo("sbb가 무엇인가요?");
+		});
+	}
+
 }
