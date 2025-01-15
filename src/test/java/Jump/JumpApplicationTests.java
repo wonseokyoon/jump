@@ -98,4 +98,15 @@ class JumpApplicationTests {
 		});
 	}
 
+	@Test
+	@DisplayName("findBySubjectLike")
+	void testJpa6() {
+		List<Question> list=questionRepository.findBySubjectLike("sbb%");
+
+		// 0번 question이 sbb문자열로 시작하는지 확인
+		Question question=list.get(0);
+		assertThat(question.getSubject())
+				.contains("sbb");
+	}
+
 }
