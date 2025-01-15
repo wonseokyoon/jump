@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
 class JumpApplicationTests {
@@ -50,11 +51,31 @@ class JumpApplicationTests {
 	@DisplayName("findById")
 	void testJpa3(){
 		Optional<Question> question=questionRepository.findById(1);
-		if(question.isPresent()){
-			Question q=question.get();
-			assertEquals("sbb가 무엇인가요?",q.getSubject());
-		}
+		// 존재하는지 확인
+		assertThat(question).isPresent();
 
+		// 필드 검증
+		question.ifPresent(q -> {
+			assertThat(q.getSubject())
+					.isEqualTo("sbb가 무엇인가요?");
+			assertThat(q.getContent())
+					.isEqualTo("sbb에 대해서 알고 싶습니다.");
+		});
+	}
 
+	@Test
+	@DisplayName("findBySubject")
+	void testJpa4(){
+		Optional<Question> question=questionRepository.findBySubject("sbb가 무엇인가요?");
+		// 존재하는지 확인
+		assertThat(question).isPresent();
+
+		// 필드 검증
+		question.ifPresent(q -> {
+			assertThat(q.getId())
+					.isEqualTo(1);
+			assertThat(q.getContent())
+					.isEqualTo("sbb에 대해서 알고 싶습니다.");
+		});
 	}
 }
