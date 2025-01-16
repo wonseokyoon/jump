@@ -6,14 +6,16 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
 
 @RequiredArgsConstructor
-@RestController
+@Controller
 @RequestMapping("/question")
 @Transactional
 public class QuestionController {
@@ -26,9 +28,16 @@ public class QuestionController {
         return questionService.findById(id);
     }
 
+//    @GetMapping("/list")
+//    public List<Question> findAll(){
+//        return questionService.findAll();
+//    }
+
     @GetMapping("/list")
-    public List<Question> findAll(){
-        return questionService.findAll();
+    public String list(Model model) {
+        List<Question> questionList = this.questionService.findAll();
+        model.addAttribute("questionList", questionList);
+        return "question_list";
     }
 
     @PostMapping()
