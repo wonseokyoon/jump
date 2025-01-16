@@ -21,7 +21,7 @@ import java.util.Optional;
 public class QuestionController {
 
     @Autowired
-    private QuestionService questionService;
+    private final QuestionService questionService;
 
     @GetMapping("/id")
     public Optional<Question> findById(Long id){
@@ -38,6 +38,13 @@ public class QuestionController {
         List<Question> questionList = this.questionService.findAll();
         model.addAttribute("questionList", questionList);
         return "question_list";
+    }
+
+    @GetMapping(value="/detail/{id}")
+    public String detail(Model model,@PathVariable("id") Integer id){
+        Question question=questionService.getQuestion(id);
+        model.addAttribute("question",question);
+        return "question_detail";
     }
 
     @PostMapping()
@@ -65,4 +72,5 @@ public class QuestionController {
             return ResponseEntity.status(404).body(e.getMessage());
         }
     }
+
 }
