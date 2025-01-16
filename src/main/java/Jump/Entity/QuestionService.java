@@ -36,4 +36,14 @@ public class QuestionService {
             throw new RuntimeException("존재하지 않는 Question");
         }
     }
+
+    public void deleteQuestion(Long id) {
+        try {
+            Optional<Question> question = questionRepository.findById(id);
+            Question deleteQuestion = question.get();
+            questionRepository.delete(deleteQuestion);
+        } catch (RuntimeException e){
+            throw new RuntimeException("Question"+id+" is not found");
+        }
+    }
 }

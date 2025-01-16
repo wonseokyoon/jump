@@ -5,6 +5,7 @@ import Jump.Entity.QuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -12,6 +13,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/question")
+@Transactional
 public class QuestionController {
 
     @Autowired
@@ -34,6 +36,17 @@ public class QuestionController {
             return ResponseEntity.ok(modifiedQuestion);
         }catch (RuntimeException e){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+    }
+
+
+    @DeleteMapping("/id")
+    public ResponseEntity<String> deleteQuestion(@PathVariable Long id) {
+        try{
+            questionService.deleteQuestion(id);
+            return ResponseEntity.ok("Question"+id+" deleted Successfully");
+        }catch (RuntimeException e){
+            return ResponseEntity.status(404).body(e.getMessage());
         }
     }
 }

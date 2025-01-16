@@ -6,6 +6,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -13,13 +15,15 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 @SpringBootTest
 class JumpApplicationTests {
 
 	@Autowired
 	private QuestionRepository questionRepository;
-
+	@Autowired
+	private QuestionController questionController;
 	@Test
 	@DisplayName("create table")
 	void testJpa1() {
@@ -130,4 +134,32 @@ class JumpApplicationTests {
 		questionRepository.save(question1);
 
 	}
+
+	@Test
+	@DisplayName("delete question")
+	void testJpa8() {
+		Long idToDelete = 1L;
+		Question question = new Question();
+		question.setId(idToDelete);
+		question.setSubject("삭제할 질문");
+		question.setContent("이 질문은 삭제될 것입니다.");
+		question.setCreateDate(LocalDateTime.now());
+		questionRepository.save(question);
+
+		Optional<Question> beforeDelete = questionRepository.findById(idToDelete);
+		assertThat(beforeDelete).isPresent();
+
+		// 삭제 요청을 수행
+		ResponseEntity<String> response = questionController.deleteQuestion(idToDelete);
+
+		// 응답 검증
+		assertEquals(HttpStatus.OK, response.getStatusCode());
+		assertEquals("Question" + idToDelete + " deleted Successfully", response.getBody());
+
+		// 삭제 후 질문이 존재하지 않는지 확인
+		Optional<Question> deletedQuestion = questionRepository.findById(idToDelete);
+		assertFalse(deletedQuestion.isPresent(), "질문이 삭제되어야 합니다.");
+	}
+
+
 }
