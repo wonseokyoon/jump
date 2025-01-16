@@ -161,5 +161,20 @@ class JumpApplicationTests {
 		assertFalse(deletedQuestion.isPresent(), "질문이 삭제되어야 합니다.");
 	}
 
+	@Test
+	@DisplayName("create question")
+	void testJpa9(){
+		String subject = "테스트 제목";
+		String content = "테스트 내용";
+		Question newQuestion=new Question();
+		newQuestion.setSubject(subject);
+		newQuestion.setContent(content);
+
+		ResponseEntity<Question> response
+				=questionController.createQuestion(newQuestion);
+		assertEquals(HttpStatus.OK,response.getStatusCode());
+		Optional<Question> optionalQuestion=questionController.findById(newQuestion.getId());
+		assertThat(optionalQuestion).isPresent();
+	}
 
 }

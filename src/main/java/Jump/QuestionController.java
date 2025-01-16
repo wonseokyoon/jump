@@ -29,6 +29,11 @@ public class QuestionController {
         return questionService.findAll();
     }
 
+    @PostMapping()
+    public ResponseEntity<Question> createQuestion(@RequestBody Question question){
+        return ResponseEntity.ok(questionService.createQuestion(question));
+    }
+
     @PutMapping("/{id}")
     public ResponseEntity<Question> modifyQuestion(@PathVariable Long id, @RequestBody Question modifyQuestion ){
         try{
