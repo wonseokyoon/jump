@@ -1,7 +1,7 @@
-package Jump;
+package Jump.Controller;
 
 import Jump.Entity.Question;
-import Jump.Entity.QuestionService;
+import Jump.Service.QuestionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

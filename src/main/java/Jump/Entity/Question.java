@@ -25,6 +25,6 @@ public class Question {
     private LocalDateTime createDate;
 
     @OneToMany(mappedBy = "question",cascade = CascadeType.REMOVE)
-    private List<Answer> answerlist;
+    private List<Answer> answerList;
 
 }

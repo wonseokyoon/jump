@@ -1,5 +1,6 @@
 package Jump;
 
+import Jump.Controller.QuestionController;
 import Jump.Entity.Question;
 import Jump.Repository.QuestionRepository;
 import org.junit.jupiter.api.DisplayName;

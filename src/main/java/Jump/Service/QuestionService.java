@@ -1,6 +1,7 @@
-package Jump.Entity;
+package Jump.Service;
 
 import Jump.DataNotFoundException;
+import Jump.Entity.Question;
 import Jump.Repository.QuestionRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
