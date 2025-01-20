@@ -1,7 +1,9 @@
 package Jump.Controller;
 
 import Jump.Entity.Question;
+import Jump.Entity.QuestionForm;
 import Jump.Service.QuestionService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -9,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -50,6 +53,20 @@ public class QuestionController {
     @PostMapping()
     public ResponseEntity<Question> createQuestion(@RequestBody Question question){
         return ResponseEntity.ok(questionService.createQuestion(question));
+    }
+
+    @GetMapping("/create")
+    public String questionCreate(){
+        return "question_form";
+    }
+    @PostMapping("/create")
+    public String questionCreate(@Valid QuestionForm questionForm,
+                                 BindingResult bindingResult){
+        if(bindingResult.hasErrors()){
+            return "question_form";
+        }
+        questionService.create(questionForm.getSubject(),questionForm.getContent());
+        return "redirect:/question/list";
     }
 
     @PutMapping("/{id}")
