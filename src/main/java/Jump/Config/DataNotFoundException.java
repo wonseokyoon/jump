@@ -1,4 +1,4 @@
-package Jump;
+package Jump.Config;
 
 
 import org.springframework.http.HttpStatus;

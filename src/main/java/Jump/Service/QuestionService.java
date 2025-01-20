@@ -1,6 +1,6 @@
 package Jump.Service;
 
-import Jump.DataNotFoundException;
+import Jump.Config.DataNotFoundException;
 import Jump.Entity.Question;
 import Jump.Repository.QuestionRepository;
 import lombok.RequiredArgsConstructor;
