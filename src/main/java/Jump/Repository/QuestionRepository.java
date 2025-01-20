@@ -1,6 +1,8 @@
 package Jump.Repository;
 
 import Jump.Entity.Question;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
@@ -15,5 +17,6 @@ public interface QuestionRepository extends JpaRepository<Question,Integer> {
     List<Question> findBySubjectLike(String subject);
     List<Question> findAll();
     Optional<Question> findById(long id);
+    Page<Question> findAll(Pageable pageable);
 
 }

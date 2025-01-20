@@ -3,6 +3,7 @@ package Jump;
 import Jump.Controller.QuestionController;
 import Jump.Entity.Question;
 import Jump.Repository.QuestionRepository;
+import Jump.Service.QuestionService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,8 @@ class JumpApplicationTests {
 	private QuestionRepository questionRepository;
 	@Autowired
 	private QuestionController questionController;
+	@Autowired
+	private QuestionService questionService;
 	@Test
 	@DisplayName("create table")
 	void testJpa1() {
@@ -176,6 +179,15 @@ class JumpApplicationTests {
 		assertEquals(HttpStatus.OK,response.getStatusCode());
 		Optional<Question> optionalQuestion=questionController.findById(newQuestion.getId());
 		assertThat(optionalQuestion).isPresent();
+	}
+
+	@Test
+	void testJpa10() {
+		for (int i = 1; i <= 300; i++) {
+			String subject = String.format("테스트 데이터입니다:[%03d]", i);
+			String content = "내용무";
+			this.questionService.create(subject, content);
+		}
 	}
 
 }
