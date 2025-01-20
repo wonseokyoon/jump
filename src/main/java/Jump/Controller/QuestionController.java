@@ -1,5 +1,6 @@
 package Jump.Controller;
 
+import Jump.Entity.AnswerForm;
 import Jump.Entity.Question;
 import Jump.Entity.QuestionForm;
 import Jump.Service.QuestionService;
@@ -44,7 +45,7 @@ public class QuestionController {
     }
 
     @GetMapping(value="/detail/{id}")
-    public String detail(Model model,@PathVariable("id") Integer id){
+    public String detail(Model model, @PathVariable("id") Integer id, AnswerForm answerForm){
         Question question=questionService.getQuestion(id);
         model.addAttribute("question",question);
         return "question_detail";
@@ -56,7 +57,7 @@ public class QuestionController {
     }
 
     @GetMapping("/create")
-    public String questionCreate(){
+    public String questionCreate(QuestionForm questionForm){
         return "question_form";
     }
     @PostMapping("/create")
