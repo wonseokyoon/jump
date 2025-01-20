@@ -2,6 +2,7 @@ package Jump.Service;
 
 import Jump.Config.DataNotFoundException;
 import Jump.Entity.Question;
+import Jump.Entity.SiteUser;
 import Jump.Repository.QuestionRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -72,11 +73,12 @@ public class QuestionService {
         }
     }
 
-    public void create(String subject,String content){
+    public void create(String subject, String content, SiteUser user){
         Question q=new Question();
         q.setSubject(subject);
         q.setContent(content);
         q.setCreateDate(LocalDateTime.now());
+        q.setAuthor(user);
         questionRepository.save(q);
     }
 

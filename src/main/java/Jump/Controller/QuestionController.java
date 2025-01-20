@@ -3,19 +3,23 @@ package Jump.Controller;
 import Jump.Entity.AnswerForm;
 import Jump.Entity.Question;
 import Jump.Entity.QuestionForm;
+import Jump.Entity.SiteUser;
 import Jump.Service.QuestionService;
+import Jump.Service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,6 +31,7 @@ public class QuestionController {
 
     @Autowired
     private final QuestionService questionService;
+    private final UserService userService;
 
     @GetMapping("/id")
     public Optional<Question> findById(Long id){
@@ -57,17 +62,21 @@ public class QuestionController {
         return ResponseEntity.ok(questionService.createQuestion(question));
     }
 
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("/create")
     public String questionCreate(QuestionForm questionForm){
         return "question_form";
     }
+
+    @PreAuthorize("isAuthenticated()")
     @PostMapping("/create")
     public String questionCreate(@Valid QuestionForm questionForm,
-                                 BindingResult bindingResult){
+                                 BindingResult bindingResult, Principal principal){
         if(bindingResult.hasErrors()){
             return "question_form";
         }
-        questionService.create(questionForm.getSubject(),questionForm.getContent());
+        SiteUser user= userService.getUser(principal.getName());
+        questionService.create(questionForm.getSubject(),questionForm.getContent(),user);
         return "redirect:/question/list";
     }
 
