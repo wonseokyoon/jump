@@ -20,7 +20,7 @@ public class SecurityConfig {
     @Bean
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
         http.authorizeHttpRequests((authorizeHttpRequests) ->authorizeHttpRequests
-                .requestMatchers(new AntPathRequestMatcher("/**")).permitAll())
+                        .requestMatchers(new AntPathRequestMatcher("/**")).permitAll())
                 .csrf((csrf)->csrf.ignoringRequestMatchers(new AntPathRequestMatcher("/h2-console/***")))
                 .headers((headers)->headers
                         .addHeaderWriter(new XFrameOptionsHeaderWriter(
@@ -44,7 +44,7 @@ public class SecurityConfig {
 
     @Bean
     AuthenticationManager authenticationManager(AuthenticationConfiguration
-                                                 authenticationConfiguration)throws Exception{
+                                                        authenticationConfiguration)throws Exception{
         return authenticationConfiguration.getAuthenticationManager();
     }
 }
