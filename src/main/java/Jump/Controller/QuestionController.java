@@ -140,4 +140,14 @@ public class QuestionController {
         return "redirect:/";
     }
 
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/voter/id")
+    public String questionVote(Principal principal,@PathVariable("id") Integer id){
+        Question question=questionService.getQuestion(id);
+        SiteUser siteUser=userService.getUser(principal.getName());
+
+        questionService.vote(question,siteUser);
+        return String.format("redirect:/question/detail/%s",id);
+    }
+
 }
