@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+  <link rel="stylesheet" th:href="@{/bootstrap.min.css}" />
+  <title>댓글 목록</title>
+</head>
+<body>
+<div class="container my-3">
+  <h2>댓글 목록</h2>
+  <div th:each="comment : ${commentList}">
+    <div class="card my-2">
+      <div class="card-body">
+        <p th:text="${comment.content}"></p>
+        <div class="d-flex justify-content-end">
+          <small th:text="${#temporals.format(comment.createDate, 'yyyy-MM-dd HH:mm')}"></small>
+        </div>
+      </div>
+    </div>
+  </div>
+  <a th:href="@{/question/detail/{id}(id=${answer.question.id})}" class="btn btn-secondary">뒤로 가기</a>
+</div>
+</body>
+</html>

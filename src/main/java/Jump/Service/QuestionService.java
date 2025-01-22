@@ -4,6 +4,7 @@ import Jump.Config.DataNotFoundException;
 import Jump.Entity.Answer;
 import Jump.Entity.Question;
 import Jump.Entity.SiteUser;
+import Jump.Repository.AnswerRepository;
 import Jump.Repository.QuestionRepository;
 import jakarta.persistence.criteria.*;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +27,8 @@ public class QuestionService {
 
     @Autowired
     private QuestionRepository questionRepository;
+    @Autowired
+    private AnswerRepository answerRepository;
 
     public Optional<Question> findById(long id) {
         return questionRepository.findById(id);
@@ -65,7 +68,6 @@ public class QuestionService {
         return questionRepository.save(question);
 
     }
-
     public Question getQuestion(Integer id) {
         Optional<Question> question = questionRepository.findById(id);
         if (question.isPresent()) {
@@ -83,13 +85,13 @@ public class QuestionService {
         q.setAuthor(user);
         questionRepository.save(q);
     }
-
     public Page<Question> getList(int page) {
         List<Sort.Order> sorts = new ArrayList<>();
         sorts.add(Sort.Order.desc("createDate"));
         Pageable pageable = PageRequest.of(page, 10, Sort.by(sorts));
         return questionRepository.findAll(pageable);
     }
+
     public Page<Question> getList(int page,String kw) {
         List<Sort.Order> sorts = new ArrayList<>();
         sorts.add(Sort.Order.desc("createDate"));

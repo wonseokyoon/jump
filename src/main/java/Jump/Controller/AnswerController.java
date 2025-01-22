@@ -1,10 +1,8 @@
 package Jump.Controller;
 
 
-import Jump.Entity.Answer;
-import Jump.Entity.AnswerForm;
-import Jump.Entity.Question;
-import Jump.Entity.SiteUser;
+import Jump.Dto.AnswerDto;
+import Jump.Entity.*;
 import Jump.Service.AnswerService;
 import Jump.Service.QuestionService;
 import Jump.Service.UserService;
@@ -12,6 +10,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,6 +22,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.security.Principal;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/answer")
@@ -33,6 +34,15 @@ public class AnswerController {
     private final QuestionService questionService;
     private final AnswerService answerService;
     private final UserService userService;
+    @GetMapping("/list/{id}")
+    public ResponseEntity<List<AnswerDto>> viewAnswer(@PathVariable("id") Integer questionId){
+        Question question= questionService.getQuestion(questionId);
+        List<Answer> answerList=answerService.getAnswerListByQuestionId(question.getId());
+        List<AnswerDto> answerDtos=answerList.stream()
+                .map(AnswerDto::new)
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(answerDtos);
+    }
 
     @PostMapping("/create/{id}")
     public String createAnswer(Model model, @PathVariable("id") Integer id,

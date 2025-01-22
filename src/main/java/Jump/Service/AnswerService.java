@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -52,4 +53,7 @@ public class AnswerService {
         answerRepository.save(answer);
     }
 
+    public List<Answer> getAnswerListByQuestionId(Integer questionId) {
+        return answerRepository.findByQuestionId(questionId);
+    }
 }

@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.security.Principal;
+import java.util.List;
 
 @Controller
 @Transactional
@@ -60,6 +61,14 @@ public class CommentController {
         return String.format("redirect:/question/detail/%s",answer.getQuestion().getId());
     }
 
-
+    @GetMapping("/list/{answerId}")
+    public String listComments(@PathVariable("answerId") Integer answerId,
+                               Model model){
+        Answer answer= answerService.getAnswer(answerId);
+        List<Comment> commentList=commentService.getCommentByAnswer(answer);
+        model.addAttribute("commentList",commentList);
+        model.addAttribute("answer",answer);
+        return "comment_list";
+    }
 
 }

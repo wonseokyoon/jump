@@ -35,5 +35,4 @@ public class Answer {
     @OneToMany
     List<Comment> comments;
 
-
 }
