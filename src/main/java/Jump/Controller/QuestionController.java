@@ -1,9 +1,6 @@
 package Jump.Controller;
 
-import Jump.Entity.AnswerForm;
-import Jump.Entity.Question;
-import Jump.Entity.QuestionForm;
-import Jump.Entity.SiteUser;
+import Jump.Entity.*;
 import Jump.Service.QuestionService;
 import Jump.Service.UserService;
 import jakarta.validation.Valid;
